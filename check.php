@@ -2,16 +2,16 @@
 set_time_limit(0);
 ini_set('display_errors', 'on');error_reporting(E_ALL^E_NOTICE^E_WARNING^E_STRICT);
 
-$char = $argv[1];
+$file = $argv[1];
 
-$checkDomain = array('so', 'me', 'co');
+$checkDomain = array('com');
 
-startProcess($char);
+startProcess($file);
 
-function startProcess($char) {
+function startProcess($file) {
 	global $checkDomain;
 
-	$fileSourceHandle = fopen("./source/2words/$char.txt", 'rb');
+	$fileSourceHandle = fopen("./source/5words/$file", 'rb');
 	while (!feof($fileSourceHandle)) {
 		$domain = trim(fgets($fileSourceHandle, 1024));
 		if (!$domain) {
@@ -19,8 +19,8 @@ function startProcess($char) {
 		}
 
 		foreach ($checkDomain as $key => $value) {
-			$fileResultDir = "./result/2words/$value";
-			$fileErrorDir = "./error/2words/$value";
+			$fileResultDir = "./result/5words/$value";
+			$fileErrorDir = "./error/5words/$value";
 			if (!is_dir($fileResultDir)) {
 				mkdir($fileResultDir);
 			}
@@ -29,9 +29,9 @@ function startProcess($char) {
 			}
 			$_domain = "$domain.$value";
 			if (check($_domain)) {
-				file_put_contents("$fileResultDir/$char.txt", $_domain . "\n", FILE_APPEND);
+				file_put_contents("$fileResultDir/$file", $_domain . "\n", FILE_APPEND);
 			} else {
-				file_put_contents("$fileErrorDir/$char.txt", $_domain . "\n", FILE_APPEND);
+				file_put_contents("$fileErrorDir/$file", $_domain . "\n", FILE_APPEND);
 			}
 		}
 	}
